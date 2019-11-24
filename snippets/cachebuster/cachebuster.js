@@ -1,5 +1,4 @@
-//Cache Buster
-(function (){
+// Cache Buster
   var rep = /.*\?.*/,
       links = document.getElementsByTagName('link'),
       scripts = document.getElementsByTagName('script'),

@@ -1,7 +1,6 @@
 // allcolors.js
 // https://github.com/bgrins/devtools-snippets
 // Print out CSS colors used in elements on the page.
-
 (function () {
   // Should include colors from elements that have a border color but have a zero width?
   var includeBorderColorsWithZeroWidth = false;
