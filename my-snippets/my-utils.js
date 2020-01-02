@@ -19,6 +19,41 @@ window.my.traceProp = (object, property) => {
   });
 };
 
+// test
+//      my.findValue({ a: 1, b: [{ c: 2 }]}, 2) => ['b.0.c']
+window.my.findValue = (initialObject, findValue) => {
+  const timeStart = performance.now()
+  const result = [];
+  // { prevKeys, tobeExamined: object/array }
+  const queue = [{ tobeExamined: initialObject, prevKeys: []}]
+  while(queue.length !== 0 || performance.now() - timeStart > 5000) {
+    const queuedItem = queue.shift();
+
+    const { tobeExamined, prevKeys} = queuedItem;
+
+    // NOTE: width first search
+    for (const [key, value] of Object.entries(tobeExamined)) {
+      if (Array.isArray(value)) {
+        queue.push({ tobeExamined: value, prevKeys: [...prevKeys, key]})
+      }
+      else if (typeof value === 'object' && value != null) {
+        queue.push({ tobeExamined: value, prevKeys: [...prevKeys, key]})
+      }
+      else {
+        if (value === findValue) {
+          result.push([...prevKeys, key].join('.'));
+        }
+      }
+    }
+  }
+
+  if (queue.length !== 0) {
+    console.warn('Lookup timed out!', findValue);
+  }
+
+  return result;
+};
+
 window.my.every = groupsOf => {
   return function(arr, callback) {
     let ending = arr.length - groupsOf;
